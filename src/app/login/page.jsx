@@ -1,11 +1,10 @@
 'use client';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation'; // For redirect
 
 export default function LoginForm() {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
+  const [formData, setFormData] = useState({ email: '', password: '' });
+  const router = useRouter(); // initialize router
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -14,18 +13,27 @@ export default function LoginForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
-    });
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
 
-    const data = await res.json();
-    if (data.success) {
-      alert('Login successful!');
-      // You can redirect to dashboard with Router.push('/dashboard')
-    } else {
-      alert('Error: ' + data.error);
+      const data = await res.json();
+
+      if (data.success) {
+        // Store JWT in localStorage
+        localStorage.setItem('token', data.token);
+
+        // Redirect to dashboard
+        router.push('/dashboard');
+      } else {
+        alert('Error: ' + data.error);
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      alert('Server error');
     }
   };
 

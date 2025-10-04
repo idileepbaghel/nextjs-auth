@@ -39,7 +39,7 @@ export async function POST(request) {
       phone,
     });
 
-    console.log('New User Created:', user);
+    // console.log('New User Created:', user);
 
     // 5️⃣ Send success response
     return NextResponse.json(

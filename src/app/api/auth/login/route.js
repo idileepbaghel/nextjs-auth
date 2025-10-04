@@ -11,8 +11,8 @@ export async function POST(request) {
     const { email, password } = await request.json();
 
     const user = await Users.findOne({ email });
-    console.log('Login attempt for user:', email);
-    console.log('User found:', user);
+    // console.log('Login attempt for user:', email);
+    // console.log('User found:', user);
     
     if (!user) {
       return NextResponse.json(
@@ -23,8 +23,8 @@ export async function POST(request) {
 
     const isMatch = await bcrypt.compare(password, user.password);
 
-    console.log('Password attempt:', password);
-    console.log('Password comparison result:', isMatch);
+    // console.log('Password attempt:', password);
+    // console.log('Password comparison result:', isMatch);
     
     if (!isMatch) {
       return NextResponse.json(
