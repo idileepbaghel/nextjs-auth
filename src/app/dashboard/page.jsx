@@ -39,7 +39,7 @@ export default function DashboardPage() {
     }
 
     fetchUsers();
-    console.log(fetchUsers);
+    // console.log(fetchUsers);
     
   }, [router]);
 
