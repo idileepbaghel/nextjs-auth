@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
 
 export default function SignupForm() {
   const [formData, setFormData] = useState({
@@ -9,6 +10,8 @@ export default function SignupForm() {
     password: '',
     phone: '',
   });
+  const [flash, setFlash] = useState('');
+  const router = useRouter();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,14 +28,24 @@ export default function SignupForm() {
 
     const data = await res.json();
     if (data.success) {
-      alert('Signup successful! Please login.');
+      setFlash('✅ Signup successful! Please log in.');
+      setTimeout(() => {
+          setFlash('');
+          router.push('/login');
+        }, 2000);
     } else {
-      alert('Error: ' + data.error);
+      setFlash('❌ ' + data.error);
+      setTimeout(() => setFlash(''), 3000);
     }
   };
 
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+      {flash && (
+        <div className="absolute top-4 right-4 bg-green-600 text-white px-4 py-2 rounded-md shadow-lg animate-fade-in-out">
+          {flash}
+        </div>
+      )}
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <img
           alt="Your Company"
@@ -48,7 +61,7 @@ export default function SignupForm() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-gray-900">
-              Full Name
+              Full Name<span className='text-red-600'>*</span>
             </label>
             <input
               id="name"
@@ -63,7 +76,7 @@ export default function SignupForm() {
 
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-900">
-              Email address
+              Email address<span className='text-red-600'>*</span>
             </label>
             <input
               id="email"
@@ -78,7 +91,7 @@ export default function SignupForm() {
 
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-900">
-              Password
+              Password<span className='text-red-600'>*</span>
             </label>
             <input
               id="password"
@@ -99,14 +112,14 @@ export default function SignupForm() {
               id="phone"
               name="phone"
               type="tel"
-              required
+              maxLength={10}
               value={formData.phone}
               onChange={handleChange}
               className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             />
           </div>
 
-          <div>
+          <div className='flex flex-col gap-4'>
             <button
               type="submit"
               className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"

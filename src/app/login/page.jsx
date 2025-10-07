@@ -1,10 +1,12 @@
 'use client';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation'; // For redirect
+import Link from "next/link";
+import { useRouter } from 'next/navigation';
 
 export default function LoginForm() {
   const [formData, setFormData] = useState({ email: '', password: '' });
-  const router = useRouter(); // initialize router
+  const [flash, setFlash] = useState('');
+  const router = useRouter();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -23,22 +25,34 @@ export default function LoginForm() {
       const data = await res.json();
 
       if (data.success) {
-        // Store JWT in localStorage
         localStorage.setItem('token', data.token);
 
-        // Redirect to dashboard
-        router.push('/dashboard');
+        // ✅ Show success flash
+        setFlash('✅ Login successful!');
+        
+        // Hide message after 2 seconds and redirect
+        setTimeout(() => {
+          setFlash('');
+          router.push('/dashboard');
+        }, 2000);
       } else {
-        alert('Error: ' + data.error);
+        setFlash('❌ ' + data.error);
+        setTimeout(() => setFlash(''), 3000);
       }
     } catch (err) {
       console.error('Login error:', err);
-      alert('Server error');
+      setFlash('⚠️ Server error. Please try again.');
+      setTimeout(() => setFlash(''), 3000);
     }
   };
 
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+      {flash && (
+        <div className="absolute top-4 right-4 bg-green-600 text-white px-4 py-2 rounded-md shadow-lg animate-fade-in-out">
+          {flash}
+        </div>
+      )}
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <img
           alt="Your Company"
@@ -54,7 +68,7 @@ export default function LoginForm() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-900">
-              Email address
+              Email address<span className='text-red-600'>*</span>
             </label>
             <input
               id="email"
@@ -69,7 +83,7 @@ export default function LoginForm() {
 
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-900">
-              Password
+              Password<span className='text-red-600'>*</span>
             </label>
             <input
               id="password"
@@ -82,13 +96,22 @@ export default function LoginForm() {
             />
           </div>
 
-          <div>
+          <div className='flex flex-col gap-4'>
             <button
-              type="submit"
+              type="submit" style={{cursor: 'pointer'}}
               className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               Sign in
             </button>
+            <p className="flex justify-center text-sm text-gray-600">
+              Create New account?{" "}
+              <Link
+                href="/signup"
+                className="font-semibold text-indigo-600 hover:text-indigo-500"
+              >
+                SignUp
+              </Link>
+            </p>
           </div>
         </form>
       </div>

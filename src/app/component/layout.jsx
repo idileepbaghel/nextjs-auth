@@ -3,13 +3,14 @@ import "../globals.css";
 import { useRouter } from "next/navigation";
 import { FaHome } from "react-icons/fa";
 import { TbLogout2 } from "react-icons/tb";
+import { GiMedicines } from "react-icons/gi";
 
 export default function DashboardLayout({ children }) {
   const router = useRouter();
 
   const handleLogout = () => {
-    localStorage.removeItem("token"); // remove JWT
-    router.push("/login"); // redirect to login
+    localStorage.removeItem("token");
+    router.push("/login");
   };
 
   return (
@@ -106,11 +107,23 @@ export default function DashboardLayout({ children }) {
             <ul className="space-y-2 font-medium">
               <li>
                 <a
-                  href="#"
+                  href="/dashboard"
                   className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-gray-100 group"
                 >
                   <FaHome className="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-700" />
                   <span className="ms-3">Dashboard</span>
+                </a>
+              </li>
+              {/* Add more links here */}
+            </ul>
+            <ul className="space-y-2 font-medium">
+              <li>
+                <a
+                  href="/medicine"
+                  className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-gray-100 group"
+                >
+                  <GiMedicines className="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-700" />
+                  <span className="ms-3">Medicines</span>
                 </a>
               </li>
               {/* Add more links here */}
