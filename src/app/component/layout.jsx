@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { FaHome } from "react-icons/fa";
 import { TbLogout2 } from "react-icons/tb";
 import { GiMedicines } from "react-icons/gi";
+import { FaPills } from "react-icons/fa";
 
 export default function DashboardLayout({ children }) {
   const router = useRouter();
@@ -119,10 +120,10 @@ export default function DashboardLayout({ children }) {
             <ul className="space-y-2 font-medium">
               <li>
                 <a
-                  href="/master-medicine"
+                  href="/master_medicine"
                   className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-gray-100 group"
                 >
-                  <GiMedicines className="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-700" />
+                  <FaPills className="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-700" />
                   <span className="ms-3">Master Medicines</span>
                 </a>
               </li>
@@ -131,7 +132,7 @@ export default function DashboardLayout({ children }) {
             <ul className="space-y-2 font-medium">
               <li>
                 <a
-                  href="/medicine"
+                  href="/"
                   className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-gray-100 group"
                 >
                   <GiMedicines className="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-700" />

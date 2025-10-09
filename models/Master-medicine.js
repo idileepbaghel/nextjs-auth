@@ -12,15 +12,15 @@ const MedicineSchema = new mongoose.Schema(
       trim: true,
     },
     category: {
-      type: String, // later you can reference a Category model
+      type: String,
       trim: true,
     },
     dosage_form: {
-      type: String, // e.g., Tablet, Syrup, Injection
+      type: String,
       trim: true,
     },
     strength: {
-      type: String, // e.g., 500mg, 5ml
+      type: String,
       trim: true,
     },
     manufacturer: {
@@ -49,7 +49,8 @@ const MedicineSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-MedicineSchema.index({ name: 1, brand_name: 1 }, { unique: true }); // Avoid duplicate entries
+MedicineSchema.index({ name: 1, brand_name: 1 }, { unique: true });
 
-export default mongoose.models.masterMedicine ||
-  mongoose.model('masterMedicine', MedicineSchema);
+// ✅ FIX: Use consistent naming (no hyphen)
+export default mongoose.models.mastermedicine || 
+  mongoose.model('mastermedicine', MedicineSchema);

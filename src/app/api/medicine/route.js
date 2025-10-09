@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
-import masterMedicine from '@/models/masterMedicine';
+import mastermedicine from '@/models/Master-medicine';
+
+console.log('✅ API Route loaded: /api/medicine');
 
 // ✅ CREATE (POST) a new master medicine
 export async function POST(request) {
@@ -30,7 +32,7 @@ export async function POST(request) {
     }
 
     // Duplicate check
-    const existing = await masterMedicine.findOne({
+    const existing = await mastermedicine.findOne({
       name: name.trim(),
       brand_name: brand_name?.trim(),
     });
@@ -46,7 +48,7 @@ export async function POST(request) {
     console.log('NextResponse:', NextResponse);
     
 
-    const medicine = await masterMedicine.create({
+    const medicine = await mastermedicine.create({
       name,
       brand_name,
       category,
@@ -76,8 +78,8 @@ export async function GET() {
   try {
     await dbConnect();
     console.log('Connected to DB');
-    const medicines = await masterMedicine.find().sort({ createdAt: -1 });
-    console.log('Fetched medicines:', medicines);
+    const medicines = await mastermedicine.find().sort({ createdAt: -1 });
+    // console.log('Fetched medicines:', medicines);
     
     return NextResponse.json({ success: true, medicines }, { status: 200 });
   } catch (error) {
